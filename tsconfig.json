@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "outDir": "./public/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "react",
+    "baseUrl": "./",
+    "typeRoots": [ "src/types", "node_modules/@types"],
+    "paths": {
+      "components/*": [
+        "src/components/*"
+      ],
+      "store/*": [
+        "src/store/*"
+      ],
+      "utils/*": [
+        "src/utils/*"
+      ]
+    }
+  },
+  "exclude": ["node_modules", "typings"]
+}
