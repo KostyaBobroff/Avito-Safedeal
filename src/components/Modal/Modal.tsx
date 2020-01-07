@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 
 import CloseButton from 'components/CloseButton';
 import CommentForm from 'components/CommentForm';
+import Loader from 'components/Loader';
 import Comment from 'components/Comment';
 import imageContentStore from 'store/imageContent';
 
@@ -32,7 +33,9 @@ const StyledModal = styled.div`
   box-sizing: border-box;
   background-color: white;
   padding: 30px;
+  min-height:425px;
   @media (max-width: 768px) {
+    min-height:unset;
     width: 100%;
     height: 100%;
     overflow: auto;
@@ -84,12 +87,12 @@ const StyledImage = styled.img`
   width: 100%;
 `;
 
-const Loader = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
+// const Loader = styled.div`
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+// `;
 
 const Modal: FunctionComponent<RouteComponentProps<{id: 'string'}>> = observer(({match: {params: {id}}}) => {
   const isOpen = !!id;
@@ -117,7 +120,7 @@ const Modal: FunctionComponent<RouteComponentProps<{id: 'string'}>> = observer((
             {imageData.comments.map(comment => <Comment comment={comment} key={comment.id}/>)}
           </Comments>
         </>
-      ) : (<Loader>Загрузка комментов...</Loader>)}  
+      ) : (<Loader/>)}  
       </StyledModal>
     </ModalWrapper>
   )

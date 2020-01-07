@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
 
 import Image from 'components/Image';
+import Loader from 'components/Loader';
 import imagesStore from 'store/images';
 import { Image as ImageType} from 'store/types';
 
@@ -15,19 +16,19 @@ const StyledContent = styled.div`
   }
 `;
 
-const Loader = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
+// const Loader = styled.div`
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+// `;
 
 const Content: FunctionComponent<{}> = observer(() => {
   const images: ImageType[] = imagesStore.images;
   const status = imagesStore.status;
   const renderContent = () => {
     return (!status ||status === 'pending') ? (
-      <Loader>Загрузка фоточек...</Loader>
+      <Loader/>
     ) : (
       images.map((image: ImageType) => 
         <Image key={image.id} id={image.id} url={image.url} />
