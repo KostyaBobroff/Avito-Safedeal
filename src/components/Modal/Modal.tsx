@@ -29,10 +29,16 @@ const StyledModal = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 619px;
-  height: 425px;
   box-sizing: border-box;
   background-color: white;
   padding: 30px;
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 0;
+    max-height: 100%;
+  }
 `;
 
 const StyledCommentFormWrapper = styled.div`
@@ -40,12 +46,35 @@ const StyledCommentFormWrapper = styled.div`
   width: 50%;
   padding-right: 2%;
   vertical-align: top;
+  @media (max-width: 768px) {
+    padding-right:0;
+    width: 100%;
+    display: flex;
+    min-height: 640px;
+    height: 100%;
+    flex-direction: column;
+    padding-bottom: 30px;
+    box-sizing: border-box;
+  }
 `;
 
 const Comments = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
   display: inline-block;
   width: 48%;
   vertical-align: top;
+`;
+
+const MobileComments = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    padding: 0 22px;
+    display: block;
+    overflow: auto;
+    flex: 1; 
+  }
 `;
 
 const StyledImage = styled.img`
@@ -53,6 +82,13 @@ const StyledImage = styled.img`
   height: 205px;
   margin-bottom: 30px;
   width: 100%;
+`;
+
+const Loader = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const Modal: FunctionComponent<RouteComponentProps<{id: 'string'}>> = observer(({match: {params: {id}}}) => {
@@ -68,17 +104,20 @@ const Modal: FunctionComponent<RouteComponentProps<{id: 'string'}>> = observer((
     <ModalWrapper isOpen={isOpen}>
       <StyledModal>
         <CloseButton />
-        {!isLoading && (
+        {!isLoading ? (
           <>
           <StyledCommentFormWrapper>
             <StyledImage src={imageData.url}/>
+            <MobileComments >
+              {imageData.comments.map(comment => <Comment comment={comment} key={comment.id}/>)}
+            </MobileComments>
             <CommentForm onSubmit={onSubmit} id={Number(id)}/>
           </StyledCommentFormWrapper>
           <Comments>
             {imageData.comments.map(comment => <Comment comment={comment} key={comment.id}/>)}
           </Comments>
         </>
-      )}  
+      ) : (<Loader>Загрузка комментов...</Loader>)}  
       </StyledModal>
     </ModalWrapper>
   )

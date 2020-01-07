@@ -7,12 +7,12 @@ import imagesStore from 'store/images';
 import { Image as ImageType} from 'store/types';
 
 const StyledContent = styled.div`
-  display: flex;
-  flex: 1;
-  flex-wrap: wrap;
-  position: relative;
-  margin: 0 -10px;
-  align-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
+  grid-column-gap: 20px;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
 `;
 
 const Loader = styled.div`
@@ -36,9 +36,11 @@ const Content: FunctionComponent<{}> = observer(() => {
   };
   console.log(imagesStore.status);
   return (
-    <StyledContent>
-      {renderContent()}
-    </StyledContent>
+    <div style={{flex:1}}>
+      <StyledContent>
+        {renderContent()}
+      </StyledContent>
+    </div>
   )
 });
 

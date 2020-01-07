@@ -25,6 +25,7 @@ const StyledInput = styled.input`
 
 const StyledButton = styled.button`
   display: block;
+  
   background-color: #4997D0;
   border-radius: 3px;
   font-size: 13px;
@@ -36,7 +37,12 @@ const StyledButton = styled.button`
   width: 100%;
   box-sizing: border-box;
 `;
-
+const Form = styled.form`
+  grid-area: form;
+  @media (max-width: 768px) {
+    padding: 0 22px;
+  }
+`;
 const CommentForm: FunctionComponent<Props> = ({onSubmit, id}) => {
   const commentInput = useRef<HTMLInputElement>();
   const nameInput = useRef<HTMLInputElement>();
@@ -47,11 +53,11 @@ const CommentForm: FunctionComponent<Props> = ({onSubmit, id}) => {
     onSubmit(id, data)
   }
   return (
-    <form onSubmit={handleOnSubmit}>
+    <Form onSubmit={handleOnSubmit}>
       <StyledInput placeholder="Ваше имя" ref={nameInput} type="text"/>
       <StyledInput placeholder="Ваш комментарий" ref={commentInput} type="text"/>
       <StyledButton>Оставить комментарий</StyledButton>
-    </form>
+    </Form>
   )
 }
 

@@ -5,13 +5,17 @@ import { Link } from 'react-router-dom';
 import ROUTES from 'utils/routes';
 
 const StyledImageWrapper = styled.div`
-  display: block;
-  box-sizing:border-box;
-  margin-top: 30px;
-  width: 229px;
-  height: 142px;
+  margin-top: 30px; 
+  /* height: 142px;
+  width: 249px; */
+  box-sizing: border-box;
+ 
   
-  padding: 0 10px;
+  /* @media (max-width: 768px) {
+    width: 280px;
+    height: 171px;
+  }
+  padding: 0 10px; */
 `;
 
 const StyledLink = styled(Link)`

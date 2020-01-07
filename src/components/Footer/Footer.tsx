@@ -9,6 +9,7 @@ const StyledFooter = styled.div`
   font-family: Roboto Condensed;
   text-align: center;
   padding: 12px 0;
+  margin-top: 30px;
 `;
 
 const Footer: FunctionComponent<{}> = () => {
