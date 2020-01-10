@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Route } from 'react-router-dom';
 
@@ -8,7 +8,6 @@ import ImageModal from './ImageModal';
 const GalleryWrapper = styled.div`
   display: flex;
   flex: 1;
-  overflow: ${(props: {overFlow: 'hidden' | 'auto'}) => props.overFlow };
   flex-direction: column;
 `;
 
@@ -24,16 +23,16 @@ const StyledGallery = styled.div`
 `;
 
 const Gallery: FunctionComponent<{}> = () => {
-  const [overflowOfList, setOverflowOfList] = useState(false);
-  const cssOverflow = overflowOfList ?  'hidden' : 'auto';
+
+  const container = useRef<HTMLDivElement>();
 
   return (
-    <GalleryWrapper overFlow={cssOverflow}>
+    <GalleryWrapper ref={container}>
       <StyledGallery>
         <List/>
       </StyledGallery>
       <Route path={'/:id'} render={(props) => (
-        <ImageModal {...props} handleListOverflow={setOverflowOfList}/> 
+        <ImageModal {...props} container={container}/> 
       )} />
     </GalleryWrapper>
   )

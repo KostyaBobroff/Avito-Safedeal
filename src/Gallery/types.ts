@@ -3,8 +3,6 @@ export interface ImageType {
   url: string;
 }
 
-export type NetworkStatusType = 'pending' | 'done' | 'error';
-
 export interface ImageDataType {
   url: string;
   id: number;

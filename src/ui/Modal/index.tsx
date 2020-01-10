@@ -2,27 +2,29 @@ import React, {
   FunctionComponent,
   useCallback,
   SyntheticEvent,
-  KeyboardEventHandler,
   useRef,
-  useEffect
+  useEffect,
+  MutableRefObject
 } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 import CloseButton from './CloseButton';
 
+const GlobalModalStyles = createGlobalStyle`
+  .noscroll-container {
+    overflow: hidden;
+  }
+`;
+
 interface Props {
-  isOpen: boolean;
   onClose: () => void;
+  container: MutableRefObject<HTMLElement>;
   children: React.ReactNode;
 }
 
-interface ModalWrapperProps {
-  isOpen: boolean;
-}
-
 const ModalWrapper = styled.div`
-  position: ${(props: ModalWrapperProps) => props.isOpen ? 'fixed' : 'static'};
-  display: ${(props: ModalWrapperProps) => props.isOpen ? 'flex' : 'none'};
+  position:  fixed;
+  display: flex;
   width: 100%;
   height: 100%;
   top: 0;
@@ -53,28 +55,34 @@ const StyledModal = styled.div`
 
 const ESC_KEY = 'Escape';
 
-const Modal: FunctionComponent<Props> = ({isOpen, onClose, children}) => {
+const Modal: FunctionComponent<Props> = ({ onClose, children, container }) => {
   const backdropElement = useRef<HTMLDivElement>();
+
   const handleOnClick = useCallback((event: SyntheticEvent) =>
     event.target === backdropElement.current && onClose(),[]);
 
   useEffect(()=> {
+    container.current.classList.add('noscroll-container');
     const handleEscKeyEvent = (event: KeyboardEvent) => {
       event.code === ESC_KEY && onClose();
     };
     document.addEventListener('keydown', handleEscKeyEvent);
     return () => {
+      container.current.classList.remove('noscroll-container');
       document.removeEventListener('keydown', handleEscKeyEvent);
     }
   }, []);
 
   return (
-    <ModalWrapper ref={backdropElement} isOpen={isOpen} onClick={handleOnClick}>
-      <StyledModal>
-        <CloseButton onClose={onClose}/>
-        {children}  
-      </StyledModal>
-    </ModalWrapper>
+    <>
+      <GlobalModalStyles/>
+      <ModalWrapper ref={backdropElement} onClick={handleOnClick}>
+        <StyledModal>
+          <CloseButton onClose={onClose}/>
+          {children}
+        </StyledModal>
+      </ModalWrapper>
+    </>
   )
 }
 

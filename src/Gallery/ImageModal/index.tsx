@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState, useCallback } from 'react';
+import React, { FunctionComponent, useEffect, useState, useCallback, MutableRefObject } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from "react-router";
 import { useHistory } from "react-router-dom";
@@ -10,7 +10,7 @@ import Loader from 'ui/Loader';
 import { useImageContent } from 'Gallery/hooks';
 
 type Props = {
-  handleListOverflow: (flag: boolean) => void;
+  container: MutableRefObject<HTMLElement>;
 };
 
 const StyledCommentFormWrapper = styled.div`
@@ -68,23 +68,18 @@ const LoaderWrapper = styled.div`
   align-items: center;
 `;
 
-const ImageModal: FunctionComponent<RouteComponentProps<{id: string}> & Props> = ({match: {params: {id}}, handleListOverflow}) => {
+const ImageModal: FunctionComponent<RouteComponentProps<{id: string}> & Props> = ({match: {params: {id}}, container}) => {
   const history = useHistory();
   const [imageData, isPending, postComment] = useImageContent(+id);
 
   const onSubmit = postComment;
 
-  useEffect(() => {
-    handleListOverflow(true);
-  }, [id]);
-
   const onClose = useCallback(() => {
-    handleListOverflow(false);
     history.push('/');
   }, []);
 
   return (
-    <Modal isOpen onClose={onClose}>
+   <Modal container={container} onClose={onClose}>
       {!isPending ? (
         <>
           <StyledCommentFormWrapper>
