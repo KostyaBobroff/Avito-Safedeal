@@ -18,7 +18,7 @@
 * Запуск сервера в dev режиме: ```npm start```
 * Запуск сервера в production режиме: ```npm run build```
 
-Используемые техгологии: ```React```, ```Typescript```, ```Mobx```, ```react-router```, ```styled-components```, ```moment```.
+Используемые техгологии: ```React```, ```Typescript```, ```react-router```, ```styled-components```, ```moment```.
 
 
 ### Пример работы

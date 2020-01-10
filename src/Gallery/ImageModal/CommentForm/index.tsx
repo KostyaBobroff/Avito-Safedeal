@@ -69,7 +69,7 @@ const CommentForm: FunctionComponent<Props> = ({onSubmit, id}) => {
     return true; 
   }, [nameInput, commentInput]);
 
-  const handleOnSubmit = (event: React.SyntheticEvent) => {
+  const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
     const name = nameInput.current.value.trim();
@@ -81,7 +81,7 @@ const CommentForm: FunctionComponent<Props> = ({onSubmit, id}) => {
     onSubmit(id, {comment, name})
   }
   return (
-    <Form onSubmit={handleOnSubmit}>
+    <Form onSubmit={handleSubmit}>
       {!validationData.isValid && <Error>{validationData.text}</Error>}
       <StyledInput placeholder="Ваше имя" ref={nameInput} type="text"/>
       <StyledInput placeholder="Ваш комментарий" ref={commentInput} type="text"/>

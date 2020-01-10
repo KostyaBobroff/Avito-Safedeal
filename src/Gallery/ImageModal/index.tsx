@@ -2,13 +2,12 @@ import React, { FunctionComponent, useEffect, useState, useCallback } from 'reac
 import styled from 'styled-components';
 import { RouteComponentProps } from "react-router";
 import { useHistory } from "react-router-dom";
-import { observer } from 'mobx-react-lite';
 
 import Comment from './Comment';
 import CommentForm from './CommentForm';
-import galleryStore from 'Gallery/store';
 import Modal from 'ui/Modal';
 import Loader from 'ui/Loader';
+import { useImageContent } from 'Gallery/hooks';
 
 type Props = {
   handleListOverflow: (flag: boolean) => void;
@@ -57,28 +56,36 @@ const StyledImage = styled.img`
   width: 100%;
 `;
 
-const ImageModal: FunctionComponent<RouteComponentProps<{id: string}> & Props> = observer(({match: {params: {id}}, handleListOverflow}) => {
-  const [isOpen, setIsOpen] = useState(!!id);
-  const history = useHistory();
+const LoaderWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
 
-  const imageData = galleryStore.imageData;
-  const isLoading = !galleryStore.imageContentLoadStatus || galleryStore.imageContentLoadStatus === 'pending';
-  const onSubmit = galleryStore.postComment;
+const ImageModal: FunctionComponent<RouteComponentProps<{id: string}> & Props> = ({match: {params: {id}}, handleListOverflow}) => {
+  const history = useHistory();
+  const [imageData, isPending, postComment] = useImageContent(+id);
+
+  const onSubmit = postComment;
 
   useEffect(() => {
-    galleryStore.fetchImageContent(+id);
     handleListOverflow(true);
   }, [id]);
 
   const onClose = useCallback(() => {
-    setIsOpen(false);
     handleListOverflow(false);
     history.push('/');
   }, []);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      {!isLoading ? (
+    <Modal isOpen onClose={onClose}>
+      {!isPending ? (
         <>
           <StyledCommentFormWrapper>
             <StyledImage src={imageData.url}/>
@@ -90,10 +97,13 @@ const ImageModal: FunctionComponent<RouteComponentProps<{id: string}> & Props> =
           <Comments>
             {imageData.comments.map(comment => <Comment comment={comment} key={comment.id}/>)}
           </Comments>
-        </>) : (<Loader/>)
-      }
+        </>) : (
+        <LoaderWrapper>
+          <Loader/>
+        </LoaderWrapper>
+      )}
     </Modal>
   )
-})
+};
 
 export default ImageModal;

@@ -17,7 +17,7 @@ const API_URLS = {
 export default class GalleryApi {
   static async loadImages() {
     const response = await fetch(API_URLS.IMAGES);
-    return await response.json();
+    return response.json();
   }
   static async loadImageContent(id: number) {
     const response = await fetch(API_URLS.IMAGE_CONTENT.create(id));
