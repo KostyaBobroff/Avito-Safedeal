@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "name": "avito-safedeal",
+  "alias": ["avito-safedeal"],
+  "builds": [
+    { "src": "public/**", "use": "@now/static" }
+  ],
+  "routes": [
+    { "src": "/bundle.min.js$", "dest": "public/bundle.min.js" },
+    { "src": "/.*$", "dest": "public/index.html" }
+  ],
+  "github": {
+    "enabled": false
+  }
+}

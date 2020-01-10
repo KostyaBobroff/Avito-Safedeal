@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default;
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
@@ -11,16 +12,13 @@ module.exports = {
   resolve: {
     modules: ['node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.json'],
-    alias: {
-      components: `${srcPath}/components`,
-      store: `${srcPath}/store`,
-      utils: `${srcPath}/utils`
-    }
+    plugins: [ new TsconfigPathsPlugin({configFile: './tsconfig.json'}) ]
   },
   output: {
     path: path.join(__dirname, '/public'),
     filename: 'bundle.min.js',
   },
+  devtool: 'inline-source-map',
   module: {
     rules: [
       { 
